@@ -7,7 +7,7 @@ export function TodoList() {
 	const [input, setInput] = useState("");
 	return (
 		<div className="headerAndTable text-center">
-			<h1>todos</h1>
+			<h1 className="text-secondary">todos</h1>
 			<input
 				onChange={e => setInput(e.target.value)}
 				onKeyUp={e => {
@@ -19,7 +19,10 @@ export function TodoList() {
 				{todos.map((item, index, arr) => {
 					return (
 						<li className="list-group-item" key={index}>
-							{item}
+							{item}{" "}
+							<button className="float-right">
+								<i className="fas fa-times"></i>
+							</button>
 						</li>
 					);
 				})}
