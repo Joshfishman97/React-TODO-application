@@ -25,7 +25,10 @@ export function TodoList() {
 							{item}{" "}
 							<button
 								onClick={() => {
-									todos.splice(index, 1);
+									const newTodos = todos.filter((e, i) => {
+										return i !== index;
+									});
+									setTodos(newTodos);
 								}}
 								className="float-right">
 								<i className="fas fa-times"></i>
