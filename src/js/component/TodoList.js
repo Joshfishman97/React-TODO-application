@@ -7,18 +7,21 @@ export function TodoList() {
 	const [input, setInput] = useState("");
 	return (
 		<div className="headerAndTable text-center">
-			<h1 className="text-secondary">todos</h1>
-			<input
-				value={input}
-				onChange={e => setInput(e.target.value)}
-				onKeyUp={e => {
-					if (e.keyCode === 13 && input !== "") {
-						setTodos([...todos, input]);
-						setInput("");
-					}
-				}}
-			/>
+			<h1>todos</h1>
 			<ul className="list-group">
+				<li className="list-group-item">
+					<input
+						placeholder="What needs to be done?"
+						value={input}
+						onChange={e => setInput(e.target.value)}
+						onKeyUp={e => {
+							if (e.keyCode === 13 && input !== "") {
+								setTodos([...todos, input]);
+								setInput("");
+							}
+						}}
+					/>
+				</li>
 				{todos.map((item, index) => {
 					return (
 						<li className="list-group-item" key={index}>
@@ -36,7 +39,7 @@ export function TodoList() {
 						</li>
 					);
 				})}
-				{`${todos.length} items left`}
+				<p>{`${todos.length} items left`}</p>
 			</ul>
 		</div>
 	);
