@@ -5,6 +5,12 @@ import PropTypes from "prop-types";
 export function TodoList() {
 	const [todos, setTodos] = useState(["your todos", "Eat", "Sleep", "Drink"]);
 	const [input, setInput] = useState("");
+	React.useEffect(() => {
+		console.log("A task was added:", todos);
+	}, [todos]);
+	React.useEffect(() => {
+		console.log("todo list started");
+	}, []);
 	return (
 		<div className="headerAndTable text-center">
 			<h1>todos</h1>
