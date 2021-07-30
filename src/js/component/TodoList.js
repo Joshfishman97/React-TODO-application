@@ -2,6 +2,26 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
+function updateTodos(todos) {
+	fetch("https://assets.breatheco.de/apis/fake/todos/user/JoshFishman97", {
+		method: "PUT",
+		body: JSON.stringify(
+			todos.map(taskTitle => {
+				return {
+					label: taskTitle,
+					done: false
+				};
+			})
+		),
+		headers: new Headers({
+			"Content-Type": "application/json"
+		})
+	})
+		.then(res => res.json())
+		.then(function(response) {
+			console.log("The response came in", response);
+		});
+}
 export function TodoList() {
 	const [todos, setTodos] = useState([]);
 	const [input, setInput] = useState("");
@@ -33,8 +53,10 @@ export function TodoList() {
 						onChange={e => setInput(e.target.value)}
 						onKeyUp={e => {
 							if (e.keyCode === 13 && input !== "") {
-								setTodos([...todos, input]);
+								let newTodos = [...todos, input];
+								setTodos(newTodos);
 								setInput("");
+								updateTodos(newTodos);
 							}
 						}}
 					/>
@@ -52,6 +74,7 @@ export function TodoList() {
 												}
 											);
 											setTodos(newTodos);
+											updateTodos(newTodos);
 										}}
 										className="float-right">
 										<i className="fas fa-times"></i>
