@@ -3,13 +3,24 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
 export function TodoList() {
-	const [todos, setTodos] = useState(["your todos", "Eat", "Sleep", "Drink"]);
+	const [todos, setTodos] = useState([]);
 	const [input, setInput] = useState("");
 	React.useEffect(() => {
-		console.log("A task was added:", todos);
-	}, [todos]);
-	React.useEffect(() => {
-		console.log("todo list started");
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/JoshFishman97")
+			.then(function(response) {
+				if (!response.ok) {
+					throw Error(response.statusText);
+				}
+				// Read the response as json.
+				return response.json();
+			})
+			.then(function(responseAsJson) {
+				// Do stuff with the JSON
+				setTodos(responseAsJson.map(x => x.label));
+			})
+			.catch(function(error) {
+				console.log("Looks like there was a problem: \n", error);
+			});
 	}, []);
 	return (
 		<div className="headerAndTable text-center">
@@ -28,23 +39,27 @@ export function TodoList() {
 						}}
 					/>
 				</li>
-				{todos.map((item, index) => {
-					return (
-						<li className="list-group-item" key={index}>
-							{item}{" "}
-							<button
-								onClick={() => {
-									const newTodos = todos.filter((e, i) => {
-										return i !== index;
-									});
-									setTodos(newTodos);
-								}}
-								className="float-right">
-								<i className="fas fa-times"></i>
-							</button>
-						</li>
-					);
-				})}
+				{todos
+					? todos.map((item, index) => {
+							return (
+								<li className="list-group-item" key={index}>
+									{item}{" "}
+									<button
+										onClick={() => {
+											const newTodos = todos.filter(
+												(e, i) => {
+													return i !== index;
+												}
+											);
+											setTodos(newTodos);
+										}}
+										className="float-right">
+										<i className="fas fa-times"></i>
+									</button>
+								</li>
+							);
+					  })
+					: "hello"}
 				<p>{`${todos.length} items left`}</p>
 			</ul>
 		</div>
