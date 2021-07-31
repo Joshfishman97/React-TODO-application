@@ -1,38 +1,22 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
+import { updateTodos, createTodos, getTodos } from "./api";
 
-function updateTodos(todos) {
-	fetch("https://assets.breatheco.de/apis/fake/todos/user/JoshFishman97", {
-		method: "PUT",
-		body: JSON.stringify(
-			todos.map(taskTitle => {
-				return {
-					label: taskTitle,
-					done: false
-				};
-			})
-		),
-		headers: new Headers({
-			"Content-Type": "application/json"
-		})
-	})
-		.then(res => res.json())
-		.then(function(response) {
-			console.log("The response came in", response);
-		});
-}
 export function TodoList() {
 	const [todos, setTodos] = useState([]);
 	const [input, setInput] = useState("");
 	React.useEffect(() => {
-		fetch("https://assets.breatheco.de/apis/fake/todos/user/JoshFishman97")
+		getTodos()
 			.then(function(response) {
 				if (!response.ok) {
-					throw Error(response.statusText);
+					createTodos();
+					return [];
+				} else {
+					// Read the response as json.
+					return response.json();
 				}
 				// Read the response as json.
-				return response.json();
 			})
 			.then(function(responseAsJson) {
 				// Do stuff with the JSON
